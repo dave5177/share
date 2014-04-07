@@ -24,6 +24,9 @@
     <ClCompile Include="NumberSprite.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="TouchLayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">

@@ -1,5 +1,6 @@
 #include "HomeScene.h"
 #include "NumberSprite.h"
+#include "TouchLayer.h"
 #include <vector>
 #include <stdlib.h>
 #include <ctime>
@@ -13,14 +14,11 @@ using namespace std;
 bool HomeScene::init()
 {
 	//////////////////////////////初始化成员//////////////////////////
-	m_pNumberArr = CCArray::create();
-	m_pNumberArr->retain();//增加一次引用，类销毁的时候需要手动释放
-
 	for (int i=0; i<4; i++)
 	{
 		for (int j=0; j< 4; j++)
 		{
-			m_pMapInfo[i][j] = 0;
+			m_pNumberArr[i][j] = NULL;
 		}
 	}
 	
@@ -34,10 +32,29 @@ bool HomeScene::init()
 	m_pActionLayer = CCLayer::create();
 	this->addChild(m_pActionLayer, 0);//动作层
 	m_pTouchLayer = TouchLayer::create();
-	m_pTouchLayer->setHomeScene(this);//触摸层
+	((TouchLayer*)m_pTouchLayer)->setHomeScene(this);//触摸层
 	this->addChild(m_pTouchLayer, 50);
 	m_pMenuLayer = CCLayer::create();
 	this->addChild(m_pMenuLayer, 100);//菜单层
+
+	for (int i = 0; i< 4; i++)
+	{
+		for (int j=0; j<4; j++)
+		{
+			NumberSprite* ns = (NumberSprite*)m_pNumberArr[i][j];
+			char str[2] = "0";
+			if(ns) {
+				sprintf_s(str, 2,"%d", ns->getMType());
+			}
+			m_pLabelDebug[i][j] = CCLabelTTF::create(str, "宋体", 50);
+			m_pLabelDebug[i][j]->setPosition(ccp(180 + j * 240, 1130 - i * 240));
+			m_pLabelDebug[i][j]->setColor(ccc3(0, 0, 0));
+			m_pMenuLayer->addChild(m_pLabelDebug[i][j], 10);
+		}
+		
+	}
+	
+	CCLabelBMFont* pFontDebug = CCLabelBMFont::create();
 
 	CCSprite* pBackSprite = CCSprite::create("home_back.png");
 
@@ -109,7 +126,7 @@ void HomeScene::createNumberSprite()
 	{
 		for (int j=0; j< 4; j++)
 		{
-			if (m_pMapInfo[i][j] == 0)
+			if (m_pNumberArr[i][j] == NULL)
 			{
 				emptyMap.push_back(ccp(i,j));
 			}
@@ -122,41 +139,19 @@ void HomeScene::createNumberSprite()
 	int type = rand() % 100;//0~99;
 	NumberSprite* pNumberSprite;
 	if(type < 10) {//10%的概率生成4
-		pNumberSprite = NumberSprite::create(4, emptyMap[point]);
-		m_pNumberArr->addObject(pNumberSprite);
+		pNumberSprite = NumberSprite::create(4, emptyMap[point], this);
+		m_pNumberArr[(int)emptyMap[point].x][(int)emptyMap[point].y]=pNumberSprite;
 	} else {//生成2
-		pNumberSprite = NumberSprite::create(2, emptyMap[point]);
-		m_pNumberArr->addObject(pNumberSprite);
+		pNumberSprite = NumberSprite::create(2, emptyMap[point], this);
+		m_pNumberArr[(int)emptyMap[point].x][(int)emptyMap[point].y]=pNumberSprite;
 	}
 	m_pActionLayer->addChild(pNumberSprite, 0);
-}
-
-void HomeScene::changeMapInfo(const int type, const int row, const int col)
-{
-	m_pMapInfo[row][col] = type;
-}
-
-int HomeScene::getNumberSprInMap(NumberSprite* resultNum, const int row, const int col)
-{
-	NumberSprite* numSpr;
-	CCObject *cObj;
-	CCARRAY_FOREACH(m_pNumberArr, cObj)
-	{
-		numSpr = (NumberSprite*)cObj;
-		CCPoint point = numSpr->getMPoint();
-		if (point.x == row && point.y == col)
-		{
-			resultNum = numSpr;
-			return numSpr->getMType();
-		}
-	}
-
-	return 0;
+	emptyMap.clear();
 }
 
 void HomeScene::handleTouch(CCPoint endTouchPoint)
 {
-	if (abs(m_touchStartPoint.x - endTouchPoint.x) > 50 && abs(m_touchStartPoint.y - endTouchPoint.y) > 50)
+	if (abs(m_touchStartPoint.x - endTouchPoint.x) > 50 || abs(m_touchStartPoint.y - endTouchPoint.y) > 50)
 	{
 		if (abs(m_touchStartPoint.x - endTouchPoint.x) > abs(m_touchStartPoint.y - endTouchPoint.y))//x方向移动的多,则为左右
 		{
@@ -179,9 +174,42 @@ void HomeScene::handleTouch(CCPoint endTouchPoint)
 	
 }
 
-void HomeScene::removeNumSpr(NumberSprite* tarNumSpr)
+void HomeScene::removeNumSpr(CCSprite* tarNumSpr)
 {
-	m_pActionLayer->removeChild(tarNumSpr, true);
+	NumberSprite* ns = (NumberSprite*)tarNumSpr;
+	CCPoint point = ns->getMPoint();
+	m_pNumberArr[(int)point.x][(int)point.y] = NULL;
+	m_pActionLayer->removeChild(ns, false);
+	
+}
+
+void HomeScene::moveNumberSprite(cocos2d::CCSprite* tarNumSpr, int row, int col)
+{
+	m_pNumberArr[row][col] = tarNumSpr;
+	CCPoint cp = ((NumberSprite*)tarNumSpr)->getMPoint();
+	m_pNumberArr[(int)cp.x][(int)cp.y] = NULL;
+}
+
+CCSprite** HomeScene::getNumberArr()
+{
+	return (CCSprite**)m_pNumberArr;
+}
+
+void HomeScene::update(float dt)
+{
+	for (int i=0; i<4; i++)
+	{
+		for (int j=0; j<4; j++)
+		{
+			NumberSprite* ns = (NumberSprite*)m_pNumberArr[i][j];
+			char str[2] = "0";
+			if(ns) {
+				sprintf_s(str, 2,"%d", ns->getMType());
+			}
+			m_pLabelDebug[i][j]->setString(str);
+		}
+	}
+	
 }
 
 void HomeScene::leftSlide()
@@ -189,30 +217,33 @@ void HomeScene::leftSlide()
 	bool moved = false;
 	for (int i=0; i<4; i++)
 	{
-		NumberSprite* pLeftNumberSpr;
+		NumberSprite* pLeftNumberSpr = NULL;
 		for (int j=0; j<4; j++)
 		{
-			NumberSprite* pCurrentNum;
-			int type = getNumberSprInMap(pCurrentNum, i, j);
+			NumberSprite* pCurrentNum = (NumberSprite*)m_pNumberArr[i][j];
 			if(j) {
-				if(type){//当前格子有数字块
+				if(pCurrentNum){//当前格子有数字块
 					if(pLeftNumberSpr) {//左边有数字块
-						if(pLeftNumberSpr->getMType() == type) {//数字相同合成
-							pCurrentNum->synTo(pLeftNumberSpr->getMPoint().x, pLeftNumberSpr->getMPoint().y);
+						if(pLeftNumberSpr->getMType() == pCurrentNum->getMType()) {//数字相同合成
+							pCurrentNum->synTo(pLeftNumberSpr);
 							moved = true;
-						} else if(pLeftNumberSpr->getMPoint().x + 1 < pCurrentNum->getMPoint().x){//和左边的数字块中间空了格子
-							pCurrentNum->moveTo(pLeftNumberSpr->getMPoint().x + 1, pLeftNumberSpr->getMPoint().y);
+						} else if(pLeftNumberSpr->getMPoint().y + 1 < pCurrentNum->getMPoint().y){//和左边的数字块中间空了格子
+							pCurrentNum->moveTo(pCurrentNum->getMPoint().x, pLeftNumberSpr->getMPoint().y + 1);
 							moved = true;
 						}
 					} else {//移动到最左端
-						pCurrentNum->moveTo(0, pLeftNumberSpr->getMPoint().y);
+						pCurrentNum->moveTo(pCurrentNum->getMPoint().x, 0);
 						moved = true;
 					}
 				}
 			} else {//j==0,最左边的列
 				
 			}
-			pLeftNumberSpr = pCurrentNum;
+			if (pCurrentNum)
+			{
+				pLeftNumberSpr = pCurrentNum;
+			}
+			
 		}
 		
 	}
@@ -225,7 +256,41 @@ void HomeScene::leftSlide()
 
 void HomeScene::rightSlide()
 {
+	bool moved = false;
+	for (int i=0; i<4; i++)
+	{
+		NumberSprite* pRightNumberSpr = NULL;
+		for (int j=3; j>=0; j--)//从右往左遍历
+		{
+			NumberSprite* pCurrentNum = (NumberSprite*)m_pNumberArr[i][j];
+			if(j < 3) {
+				if(pCurrentNum){//当前格子有数字块
+					if(pRightNumberSpr) {//右边有数字块
+						if(pRightNumberSpr->getMType() == pCurrentNum->getMType()) {//数字相同合成
+							pCurrentNum->synTo(pRightNumberSpr);
+							moved = true;
+						} else if(pRightNumberSpr->getMPoint().y - 1 > pCurrentNum->getMPoint().y){//和右边的数字块中间空了格子
+							pCurrentNum->moveTo(pCurrentNum->getMPoint().x, pRightNumberSpr->getMPoint().y - 1);
+							moved = true;
+						}
+					} else {//右边没有数字块移动到最右端
+						pCurrentNum->moveTo(pCurrentNum->getMPoint().x, 3);
+						moved = true;
+					}
+				}
+			}
+			if (pCurrentNum)
+			{
+				pRightNumberSpr = pCurrentNum;
+			}
 
+		}
+
+	}
+
+	if(moved) {//如果移动了就生成一个数字块
+		createNumberSprite();
+	}
 }
 
 void HomeScene::upSlide()
@@ -234,11 +299,6 @@ void HomeScene::upSlide()
 }
 
 void HomeScene::downSlide()
-{
-
-}
-
-void HomeScene::update(float dt)
 {
 
 }
@@ -263,59 +323,4 @@ HomeScene::HomeScene()
 HomeScene::~HomeScene()
 {
 	//m_pNumberArr->release();//释放ccArray
-}
-
-TouchLayer::TouchLayer()
-{
-
-}
-
-TouchLayer::~TouchLayer()
-{
-
-}
-
-bool TouchLayer::init()
-{
-
-}
-
-void TouchLayer::ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent)
-{
-	if (pTouches->count() == 1)
-	{
-		CCTouch* touch = dynamic_cast<CCTouch*>(pTouches->anyObject());
-
-		CCPoint touchStart = touch->getLocationInView();
-		touchStart = CCDirector::sharedDirector()->convertToGL(touchStart);
-		m_pHomeScene->m_touchStartPoint = touchStart;
-	}
-	
-}
-
-void TouchLayer::ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent)
-{
-
-}
-
-void TouchLayer::ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent)
-{
-	if (pTouches->count() == 1)
-	{
-		CCTouch* touch = dynamic_cast<CCTouch*>(pTouches->anyObject());
-
-		CCPoint touchEnd = touch->getLocationInView();
-		touchEnd = CCDirector::sharedDirector()->convertToGL(touchEnd);
-		m_pHomeScene->handleTouch(touchEnd);
-	}
-}
-
-HomeScene* TouchLayer::getHomeScene()
-{
-	return m_pHomeScene;
-}
-
-void TouchLayer::setHomeScene(HomeScene* homeScene)
-{
-	m_pHomeScene = homeScene;
 }

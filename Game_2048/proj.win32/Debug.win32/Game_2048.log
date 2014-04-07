@@ -1,68 +1,28 @@
-﻿生成启动时间为 2014/4/4 18:57:29。
-     1>项目“D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\Game_2048.vcxproj”在节点 2 上(build 个目标)。
-     1>InitializeBuildStatus:
-         正在对“Debug.win32\Game_2048.unsuccessfulbuild”执行 Touch 任务。
-       ClCompile:
-         D:\dave\tool\Visual Studio 2010\VC\bin\CL.exe /c /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\include" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\kazmath\include" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\win32" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\third_party\win32" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\third_party\win32\OGLES" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\external" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\external\chipmunk\include\chipmunk" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\CocosDenshion\include" /I"D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\extensions" /I..\Classes /I.. /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USE_MATH_DEFINES /D GL_GLEXT_PROTOTYPES /D CC_ENABLE_CHIPMUNK_INTEGRATION=1 /D COCOS2D_DEBUG=1 /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug.win32\\" /Fd"Debug.win32\vc100.pdb" /Gd /TP /wd4267 /wd4251 /wd4244 /analyze- /errorReport:prompt ..\Classes\AppDelegate.cpp HomeScene.cpp NumberSprite.cpp
-         NumberSprite.cpp
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(32): error C2061: 语法错误: 标识符“HomeScene”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): warning C4183: “getHomeScene”: 缺少返回类型；假定为返回“int”的成员函数
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.h(44): error C2061: 语法错误: 标识符“NumberSprite”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.h(62): error C2061: 语法错误: 标识符“NumberSprite”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.h(68): error C2146: 语法错误: 缺少“;”(在标识符“m_touchStartPoint”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.h(68): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.h(68): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.cpp(42): error C2660: “HomeScene::getNumberSprInMap”: 函数不接受 3 个参数
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.cpp(46): error C2660: “HomeScene::removeNumSpr”: 函数不接受 1 个参数
+﻿生成启动时间为 2014/4/7 20:02:53。
+     1>项目“D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\Game_2048.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         D:\IDE\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\include" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\kazmath\include" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\win32" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\third_party\win32" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\cocos2dx\platform\third_party\win32\OGLES" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\external" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\external\chipmunk\include\chipmunk" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\CocosDenshion\include" /I"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\extensions" /I..\Classes /I.. /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USE_MATH_DEFINES /D GL_GLEXT_PROTOTYPES /D CC_ENABLE_CHIPMUNK_INTEGRATION=1 /D COCOS2D_DEBUG=1 /D _CRT_SECURE_NO_WARNINGS /D _SCL_SECURE_NO_WARNINGS /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug.win32\\" /Fd"Debug.win32\vc110.pdb" /Gd /TP /wd4267 /wd4251 /wd4244 /analyze- /errorReport:prompt HomeScene.cpp
          HomeScene.cpp
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(19): error C2061: 语法错误: 标识符“HomeScene”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(32): error C2061: 语法错误: 标识符“HomeScene”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): warning C4183: “getHomeScene”: 缺少返回类型；假定为返回“int”的成员函数
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(37): error C2660: “TouchLayer::setHomeScene”: 函数不接受 1 个参数
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(291): error C2065: “m_pHomeScene”: 未声明的标识符
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(291): error C2227: “->m_touchStartPoint”的左边必须指向类/结构/联合/泛型类型
-                 类型是“'unknown-type'”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(309): error C2065: “m_pHomeScene”: 未声明的标识符
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(309): error C2227: “->handleTouch”的左边必须指向类/结构/联合/泛型类型
-                 类型是“'unknown-type'”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(314): error C2556: “HomeScene *TouchLayer::getHomeScene(void)”: 重载函数与“int *TouchLayer::getHomeScene(void)”只是在返回类型上不同
-                 d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33) : 参见“TouchLayer::getHomeScene”的声明
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(314): error C2371: “TouchLayer::getHomeScene”: 重定义；不同的基类型
-                 d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33) : 参见“TouchLayer::getHomeScene”的声明
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(315): error C2065: “m_pHomeScene”: 未声明的标识符
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\homescene.cpp(319): error C2511: “void TouchLayer::setHomeScene(HomeScene *)”:“TouchLayer”中没有找到重载的成员函数
-                 d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(10) : 参见“TouchLayer”的声明
-         AppDelegate.cpp
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(19): error C2061: 语法错误: 标识符“HomeScene”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\numbersprite.h(53): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(32): error C2061: 语法错误: 标识符“HomeScene”
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(33): warning C4183: “getHomeScene”: 缺少返回类型；假定为返回“int”的成员函数
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-     1>d:\dave\tool\cocos2d-x-2.2.2\projects\game_2048\proj.win32\touchlayer.h(37): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-         正在生成代码...
-     1>已完成生成项目“D:\dave\tool\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\Game_2048.vcxproj”(build 个目标)的操作 - 失败。
+       PreLinkEvent:
+         if not exist "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\" mkdir "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\"
+         xcopy /Y /Q "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\..\..\..\external\libwebsockets\win32\lib\*.*" "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\"
+         :VCEnd
+         复制了 2 个文件
+       Link:
+         D:\IDE\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\Game_2048.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\\" libExtensions.lib libcocos2d.lib libCocosDenshion.lib opengl32.lib glew32.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib pthreadVCE2.lib websockets.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\Game_2048.pdb" /SUBSYSTEM:WINDOWS,"5.01" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\Game_2048.lib" /MACHINE:X86 /SAFESEH Debug.win32\AppDelegate.obj
+         Debug.win32\HomeScene.obj
+         Debug.win32\main.obj
+         Debug.win32\NumberSprite.obj
+         Debug.win32\temp.obj
+         Debug.win32\TouchLayer.obj
+         "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libcocos2d.lib"
+         "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libCocosDenshion.lib"
+         "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libExtensions.lib"
+         "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libBox2D.lib"
+         "D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\libchipmunk.lib"
+         Game_2048.vcxproj -> D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\Debug.win32\Game_2048.exe
+     1>已完成生成项目“D:\tool\cocos2d-x-2.2.2\cocos2d-x-2.2.2\projects\Game_2048\proj.win32\Game_2048.vcxproj”(Build 个目标)的操作。
 
-生成失败。
+生成成功。
 
-已用时间 00:00:22.67
+已用时间 00:00:05.73

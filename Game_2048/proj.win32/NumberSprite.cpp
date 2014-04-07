@@ -19,8 +19,7 @@ NumberSprite* NumberSprite::create(int type, CCPoint point, HomeScene* pScene)
 
 	pResult->m_pScene = pScene;
 
-	pResult->setPosition(ccp(180 + point.x * 240, 1130 - point.y * 240));
-	pScene->changeMapInfo(type, point.x, point.y);
+	pResult->setPosition(ccp(180 + point.y * 240, 1130 - point.x * 240));
 
 	//////////////////////生成时从小到大的动画///////////////////////
 	CCScaleTo *toSmall = CCScaleTo::create(0.0f, 0.1f, 0.1f);//从最小缩放
@@ -35,37 +34,34 @@ void NumberSprite::update(float dt)//主逻辑。
 
 }
 
-void NumberSprite::synTo(const int row, const int col)
+void NumberSprite::synTo(NumberSprite* tarNumber)
 {
-	
-	NumberSprite* tarNumSpr; 
-	int type = m_pScene->getNumberSprInMap(tarNumSpr, row, col);
-	if(tarNumSpr && type == m_type) {
-		m_pScene->changeMapInfo(0, m_point.x, m_point.y);//当前格子设为空的
-		moveTo(row, col);
-		m_pScene->removeNumSpr(this);//移除自己
+	int type = tarNumber->getMType();
+	int row = tarNumber->getMPoint().x;
+	int col = tarNumber->getMPoint().y;
+	CCLOG("合成：目标位置：%d, %d；目标类型：%d", row, col, type);
+	//moveTo(row, col);
+	m_pScene->removeNumSpr(this);//移除自己
 
-		tarNumSpr->doubleTo();//目标数字块翻倍。
-	}
+	tarNumber->doubleTo();//目标数字块翻倍。
 }
 
 void NumberSprite::moveTo(const int row, const int col)
 {
-	m_pScene->changeMapInfo(0, m_point.x, m_point.y);//当前格子设为空的
-	m_pScene->changeMapInfo(m_type, row, col);//目标格子设置
+	m_pScene->moveNumberSprite(this, row, col);
 	m_point.x = row;
 	m_point.y = col;
 	//this->setPosition(ccp(180 + m_point.x * 240, 1130 - m_point.y * 240));
 
 	/////////////////////////////移动的动画////////////////////////
-	CCMoveTo* actionMove = CCMoveTo::create(0.5f, ccp(180 + m_point.x * 240, 1130 - m_point.y * 240));
+	CCMoveTo* actionMove = CCMoveTo::create(0.2f, ccp(180 + m_point.y * 240, 1130 - m_point.x * 240));
+	this->runAction(actionMove);
 }
 
 void NumberSprite::doubleTo()
 {
 	m_type *= 2;//类型翻倍
 	resetTexture();
-	m_pScene->changeMapInfo(m_type, m_point.x, m_point.y);//改变地图格子的信息。
 
 	////////////////////////一闪的合成动画///////////////////
 	CCScaleTo *toSmall = CCScaleTo::create(0.0f, 0.5f, 0.5f);//从最小缩放
@@ -89,6 +85,16 @@ CCPoint NumberSprite::getMPoint()
 void NumberSprite::setMPoint(CCPoint point)
 {
 	m_point = point;
+}
+
+int NumberSprite::getMType()
+{
+	return m_type;
+}
+
+void NumberSprite::setMType(int type) 
+{
+	m_type = type;
 }
 
 NumberSprite::NumberSprite()

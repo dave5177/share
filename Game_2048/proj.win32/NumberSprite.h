@@ -34,10 +34,14 @@ public:
 	//////////////////////////////////////
 	//类型2、4、8、16......2048
 	/////////////////////////////////////
-	CC_SYNTHESIZE(int, m_type, MType);
+	//CC_SYNTHESIZE(int, m_type, MType);
+	void setMType(int type);
+
+	int getMType();
+
 
 	//与指定格子中的数字合成
-	void synTo(const int row, const int col);
+	void synTo(NumberSprite* tarNumber);
 
 	//移动到指定格子
 	void moveTo(const int row, const int col);
@@ -56,6 +60,8 @@ private:
 	//在地图上的位置。（0，0）~（3,3）
 	//////////////////////////////////
 	CCPoint m_point;
+
+	int m_type;
 };
 
 #endif

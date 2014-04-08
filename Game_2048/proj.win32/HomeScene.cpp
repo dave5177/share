@@ -14,8 +14,8 @@ using namespace std;
 bool HomeScene::init()
 {
 	///////////////////////////////获取信息////////////////////////////
-	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
-	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
+	m_VisibleSize = CCDirector::sharedDirector()->getVisibleSize();
+	m_Origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
 
 	//////////////////////////////初始化成员//////////////////////////
@@ -31,7 +31,7 @@ bool HomeScene::init()
 	sprintf_s(str, 20, "%d", m_score);
 	m_pScoreTTF = CCLabelTTF::create(str, "微软雅黑", 80);
 	m_pScoreTTF->setColor(ccc3(255, 255, 255));
-	m_pScoreTTF->setPosition(ccp(visibleSize.width - 240, visibleSize.height - 260));
+	m_pScoreTTF->setPosition(ccp(m_VisibleSize.width - 240, m_VisibleSize.height - 260));
 
 	m_pRemoveNum = CCArray::create();
 	m_pRemoveNum->retain();
@@ -73,7 +73,7 @@ bool HomeScene::init()
 	CCSprite* pBackSprite = CCSprite::create("home_back.png");
 
     // position the sprite on the center of the screen
-    pBackSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));//默认以图片中点为锚点
+    pBackSprite->setPosition(ccp(m_VisibleSize.width/2 + m_Origin.x, m_VisibleSize.height/2 + m_Origin.y));//默认以图片中点为锚点
 
 	m_pBackLayer->addChild(pBackSprite, 0);
 
@@ -86,20 +86,35 @@ bool HomeScene::init()
                                         menu_selector(HomeScene::menuCloseCallback));
     
 	pRankItem->setPosition(ccp(560 + pRankItem->getContentSize().width/2 ,
-                                origin.y + visibleSize.height - 380 - pRankItem->getContentSize().height/2));
+                                m_Origin.y + m_VisibleSize.height - 380 - pRankItem->getContentSize().height/2));
+
+	//////////////////////重新开始游戏按钮////////////////////////////
+	m_pStartItem = CCMenuItemImage::create(
+		"GameBegin_0.png",
+		"GameBegin_1.png",
+		this,
+		menu_selector(HomeScene::restartGame));
+	m_pStartItem->retain();
+	m_pStartItem->setPosition(ccp(40 + m_pStartItem->getContentSize().width/2 ,
+		m_Origin.y + m_VisibleSize.height - 380 - m_pStartItem->getContentSize().height/2));
 
     // create menu, it's an autorelease object
-    CCMenu* pMenu = CCMenu::create();
-	pMenu->addChild(pRankItem);
-    pMenu->setPosition(CCPointZero);
-    m_pMenuLayer->addChild(pMenu, 20);
+    m_pMainMenu = CCMenu::create();
+	m_pMainMenu->addChild(pRankItem);
+    m_pMainMenu->setPosition(CCPointZero);
+    m_pMenuLayer->addChild(m_pMainMenu, 20);
 
-	CCSprite *pLogo = CCSprite::create("Logo.png");
-	pLogo->setPosition(ccp(40 + pLogo->getContentSize().width / 2, origin.y + visibleSize.height - 180 - pLogo->getContentSize().height/2));
-	m_pMenuLayer->addChild(pLogo, 0);
+	m_pGameOverSprite = CCSprite::create("GameOver.png");
+	m_pGameOverSprite->retain();
+	m_pGameOverSprite->setPosition(ccp(40 + m_pGameOverSprite->getContentSize().width / 2, m_Origin.y + m_VisibleSize.height - 180 - m_pGameOverSprite->getContentSize().height/2));
+
+	m_pLogoSprite = CCSprite::create("Logo.png");
+	m_pLogoSprite->setPosition(ccp(40 + m_pLogoSprite->getContentSize().width / 2, m_Origin.y + m_VisibleSize.height - 180 - m_pLogoSprite->getContentSize().height/2));
+	m_pMenuLayer->addChild(m_pLogoSprite, 0);
+	m_pLogoSprite->retain();
 
 	CCSprite *pScoreBar = CCSprite::create("GamePoint.png");
-	pScoreBar->setPosition(ccp(560 + pScoreBar->getContentSize().width / 2, origin.y + visibleSize.height - 180 - pScoreBar->getContentSize().height/2));
+	pScoreBar->setPosition(ccp(560 + pScoreBar->getContentSize().width / 2, m_Origin.y + m_VisibleSize.height - 180 - pScoreBar->getContentSize().height/2));
 	m_pMenuLayer->addChild(pScoreBar, 0);
 
 	///////////////最初生成两个数字块/////////////////
@@ -163,6 +178,15 @@ void HomeScene::createNumberSprite()
 	}
 	m_pActionLayer->addChild(pNumberSprite, 0);
 	emptyMap.clear();
+
+	if (checkGameOver())//每次生成一块数字检测是否游戏结束
+	{
+		m_pMenuLayer->removeChild(m_pLogoSprite);//移除logo
+		m_pMenuLayer->addChild(m_pGameOverSprite);
+
+		
+		m_pMainMenu->addChild(m_pStartItem);
+	}
 }
 
 bool HomeScene::checkGameOver()
@@ -220,8 +244,8 @@ bool HomeScene::rightCanMove()
 		{
 			NumberSprite* pCurrentNum = (NumberSprite*)m_pNumberArr[i][j];
 			if(j) {
-				if(pCurrentNum && pLeftNumberSpr){//当前格子有数字块
-					if(pLeftNumberSpr->getMType() == pCurrentNum->getMType()) {//数字相同合成
+				if(pCurrentNum && pRightNumberSpr){//当前格子有数字块
+					if(pRightNumberSpr->getMType() == pCurrentNum->getMType()) {//数字相同合成
 						return true;
 					} 
 				}
@@ -229,7 +253,7 @@ bool HomeScene::rightCanMove()
 
 			if(pCurrentNum)
 			{
-				pLeftNumberSpr = pCurrentNum;
+				pRightNumberSpr = pCurrentNum;
 			}
 		}
 	}
@@ -238,12 +262,60 @@ bool HomeScene::rightCanMove()
 
 bool HomeScene::upCanMove()
 {
+	for (int i=0; i<4; i++)//i为列
+	{
+		NumberSprite* pUpNumberSpr = NULL;
+		for (int j=0; j<4; j++)
+		{
+			NumberSprite* pCurrentNum = (NumberSprite*)m_pNumberArr[j][i];
+			if(j) {
+				if(pCurrentNum){//当前格子有数字块
+					if(pUpNumberSpr) {//上面有数字块
+						if(pUpNumberSpr->getMType() == pCurrentNum->getMType() && !pUpNumberSpr->isNew()) {//数字相同合成
+							return true;
+						}
+					}
+				}
+			}
 
+			if(pCurrentNum)
+			{
+				pUpNumberSpr = pCurrentNum;
+			}
+		}
+
+	}
+
+	return false;
 }
 
 bool HomeScene::downCanMove()
 {
+	for (int i=0; i<4; i++)//i为列
+	{
+		NumberSprite* pDownNumberSpr = NULL;
+		for (int j=3; j>=0; j--)
+		{
+			NumberSprite* pCurrentNum = (NumberSprite*)m_pNumberArr[j][i];
+			if(j<3) {
+				if(pCurrentNum){//当前格子有数字块
+					pCurrentNum->setNew(false);
+					if(pDownNumberSpr) {//上面有数字块
+						if(pDownNumberSpr->getMType() == pCurrentNum->getMType() && !pDownNumberSpr->isNew()) {//数字相同合成
+							return true;
+						}
+					}
+				}
+			} 
+			if(pCurrentNum)
+			{
+				pDownNumberSpr = pCurrentNum;
+			}
+		}
 
+	}
+
+	return false;
 }
 
 void HomeScene::handleTouch(CCPoint endTouchPoint)
@@ -543,6 +615,27 @@ void HomeScene::menuCloseCallback(CCObject* pSender)
     exit(0);
 #endif
 #endif
+}
+
+void HomeScene::restartGame(cocos2d::CCObject* pSender)
+{
+	for (int i=0; i<4; i++)
+	{
+		for (int j=0; j< 4; j++)
+		{
+			m_pNumberArr[i][j] = NULL;
+		}
+	}
+	m_pActionLayer->removeAllChildren();
+	m_pMainMenu->removeChild(m_pStartItem, false);
+	m_pMenuLayer->removeChild(m_pGameOverSprite);
+	m_pMenuLayer->addChild(m_pLogoSprite, 0);
+	m_score = 0;
+
+	for (int i=0; i<2; i++)
+	{
+		this->createNumberSprite();
+	}
 }
 
 HomeScene::HomeScene()

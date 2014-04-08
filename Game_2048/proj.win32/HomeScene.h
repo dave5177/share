@@ -21,6 +21,8 @@ public:
 	// a selector callback
 	void menuCloseCallback(cocos2d::CCObject* pSender);
 
+	void restartGame(cocos2d::CCObject* pSender);
+
 	//////////////////////////////////////////////////////////////////////////
 	//主逻辑调用
 	//CCNode默认并没有启用update事件，为了启用定时器，需要调用scheduleUpdate方法，并重载update以执行自己的代码。
@@ -72,11 +74,19 @@ public:
 	bool upCanMove();
 	bool downCanMove();
 
+
+	cocos2d::CCSize m_VisibleSize;//可视区域size
+	cocos2d::CCPoint m_Origin;//原点
 private:
 	cocos2d::CCLayer* m_pBackLayer;//背景层
 	cocos2d::CCLayer* m_pActionLayer;//动作层
 	cocos2d::CCLayer* m_pMenuLayer;//菜单层
 	cocos2d::CCLayer* m_pTouchLayer;//触摸层
+
+	cocos2d::CCSprite* m_pLogoSprite;//logo图标
+	cocos2d::CCSprite* m_pGameOverSprite;//游戏结束
+	cocos2d::CCMenu* m_pMainMenu;//
+	cocos2d::CCMenuItemImage *m_pStartItem;//重新开始游戏按钮
 
 	cocos2d::CCSprite* m_pNumberArr[4][4];
 	cocos2d::CCLabelTTF* m_pLabelDebug[4][4];//地图调试信息。显示每个格子上的type类型；

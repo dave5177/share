@@ -14,13 +14,14 @@ NumberSprite* NumberSprite::create(int type, CCPoint point, HomeScene* pScene)
 
 	//pResult->autorelease();
 	pResult->m_point = point;
-	
+
 	pResult->m_type = type;
 
 	pResult->m_pScene = pScene;
 
-	pResult->setPosition(ccp(180 + point.x * 240, 1130 - point.y * 240));
-	pScene->changeMapInfo(type, point.x, point.y);
+	pResult->m_new = false;
+
+	pResult->setPosition(ccp(180 + point.y * 240, 1130 - point.x * 240));
 
 	//////////////////////生成时从小到大的动画///////////////////////
 	CCScaleTo *toSmall = CCScaleTo::create(0.0f, 0.1f, 0.1f);//从最小缩放
@@ -32,44 +33,70 @@ NumberSprite* NumberSprite::create(int type, CCPoint point, HomeScene* pScene)
 
 void NumberSprite::update(float dt)//主逻辑。
 {
-
 }
 
-void NumberSprite::synTo(const int row, const int col)
+void NumberSprite::synTo(NumberSprite* tarNumber)
 {
+	m_pTarNumber = tarNumber;
+	int type = tarNumber->getMType();
+	int row = tarNumber->getMPoint().x;
+	int col = tarNumber->getMPoint().y;
+	CCLOG("合成：目标位置：%d, %d；目标类型：%d", row, col, type);
+	m_pScene->removeNumSpr(this);//移除自己
+	tarNumber->doubleTo();
 	
-	NumberSprite* tarNumSpr; 
-	int type = m_pScene->getNumberSprInMap(tarNumSpr, row, col);
-	if(tarNumSpr && type == m_type) {
-		m_pScene->changeMapInfo(0, m_point.x, m_point.y);//当前格子设为空的
-		moveTo(row, col);
-		m_pScene->removeNumSpr(this);//移除自己
+	/*int cells = 0;
+	if (m_point.x != row)
+	{
+	cells = abs(m_point.x - row);
+	} else {
+	cells = abs(m_point.y - col);
+	}*/
 
-		tarNumSpr->doubleTo();//目标数字块翻倍。
-	}
+	/////////////////////////////移动的动画////////////////////////
+	//CCMoveTo* actionMove = CCMoveTo::create(0.05f * cells, ccp(180 + m_point.y * 240, 1130 - m_point.x * 240));
+	//this->runAction(actionMove);
+	//this->runAction(CCSequence::create(actionMove, CCCallFunc::create(m_pScene,callfunc_selector(NumberSprite::moveCallBack)), NULL));//用cccallfunc创建一个回调函数动作
+	
 }
 
 void NumberSprite::moveTo(const int row, const int col)
 {
-	m_pScene->changeMapInfo(0, m_point.x, m_point.y);//当前格子设为空的
-	m_pScene->changeMapInfo(m_type, row, col);//目标格子设置
+	m_pScene->moveNumberSprite(this, row, col);
+	int cells = 0;
+	if (m_point.x != row)
+	{
+		cells = abs(m_point.x - row);
+	} else {
+		cells = abs(m_point.y - col);
+	}
+
 	m_point.x = row;
 	m_point.y = col;
 	//this->setPosition(ccp(180 + m_point.x * 240, 1130 - m_point.y * 240));
 
 	/////////////////////////////移动的动画////////////////////////
-	CCMoveTo* actionMove = CCMoveTo::create(0.5f, ccp(180 + m_point.x * 240, 1130 - m_point.y * 240));
+	CCMoveTo* actionMove = CCMoveTo::create(0.05f * cells, ccp(180 + m_point.y * 240, 1130 - m_point.x * 240));
+	this->runAction(actionMove);
+}
+
+void NumberSprite::moveCallBack()
+{
+	m_pScene->removeNumSpr(this);//移除自己
+	m_pTarNumber->doubleTo();//目标数字块翻倍。
+	m_pTarNumber = NULL;
 }
 
 void NumberSprite::doubleTo()
 {
 	m_type *= 2;//类型翻倍
+	m_pScene->addScore(m_type);
+	m_new = true;
 	resetTexture();
-	m_pScene->changeMapInfo(m_type, m_point.x, m_point.y);//改变地图格子的信息。
 
 	////////////////////////一闪的合成动画///////////////////
-	CCScaleTo *toSmall = CCScaleTo::create(0.0f, 0.5f, 0.5f);//从最小缩放
-	CCScaleTo *toBig = CCScaleTo::create(0.3f, 1, 1);
+	CCScaleTo *toSmall = CCScaleTo::create(0.0f, 0.8f, 0.8f);//从最小缩放
+	CCScaleTo *toBig = CCScaleTo::create(0.2f, 1, 1);
 	CCAction *synAction = CCSequence::create(toSmall, toBig, NULL);
 	this->runAction(synAction);
 }
@@ -89,6 +116,26 @@ CCPoint NumberSprite::getMPoint()
 void NumberSprite::setMPoint(CCPoint point)
 {
 	m_point = point;
+}
+
+int NumberSprite::getMType()
+{
+	return m_type;
+}
+
+void NumberSprite::setMType(int type) 
+{
+	m_type = type;
+}
+
+bool NumberSprite::isNew()
+{
+	return m_new;
+}
+
+void NumberSprite::setNew(bool valueNew)
+{
+	m_new = valueNew;
 }
 
 NumberSprite::NumberSprite()

@@ -18,5 +18,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     eglView->setViewName("2048");
     eglView->setFrameSize(1080, 1920);
 	 //eglView->setFrameSize(400, 640);
+	//eglView->setFrameSize(400, 640);
+	eglView->setFrameZoomFactor(0.4f);//ÉèÖÃÆÁÄ»Ëõ·Å±ÈÀı
     return CCApplication::sharedApplication()->run();
 }
